@@ -1,0 +1,49 @@
+CREATE TABLE Situacao (
+    id INTEGER NOT NULL
+        GENERATED ALWAYS AS IDENTITY
+        (START WITH 1, INCREMENT BY 1),
+    nome VARCHAR(20) NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE Tipo (
+    id INTEGER NOT NULL
+        GENERATED ALWAYS AS IDENTITY
+        (START WITH 1, INCREMENT BY 1),
+    nome VARCHAR(20) NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE Usuario (
+    id INTEGER NOT NULL
+        GENERATED ALWAYS AS IDENTITY
+        (START WITH 1, INCREMENT BY 1),
+    email VARCHAR(30) NOT NULL UNIQUE,
+    senha VARCHAR(15) NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE Pagamento (
+    id INTEGER NOT NULL
+        GENERATED ALWAYS AS IDENTITY
+        (START WITH 1, INCREMENT BY 1),
+    valor DOUBLE NOT NULL,
+    dt_pagamento DATE NOT NULL,
+    idSituacao INTEGER NOT NULL REFERENCES Situacao(id),
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE Conta (
+    id INTEGER NOT NULL
+        GENERATED ALWAYS AS IDENTITY
+        (START WITH 1, INCREMENT BY 1),
+    dt_emissao DATE,
+    dt_vencimento DATE NOT NULL,
+    valor DOUBLE NOT NULL,
+    cod_barras VARCHAR(30),
+    idTipo INTEGER NOT NULL REFERENCES Tipo(id),
+    idPagamento INTEGER UNIQUE REFERENCES Pagamento(id),
+    idUsuario INTEGER NOT NULL REFERENCES Usuario(id),
+    idSituacao INTEGER NOT NULL REFERENCES Situacao(id),
+    PRIMARY KEY(id)
+);
